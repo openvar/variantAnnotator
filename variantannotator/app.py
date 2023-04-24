@@ -70,7 +70,7 @@ def app():
             # Store variant description in the database
             for transcript in t_with_p:
                 cursor.execute("""INSERT INTO hgvs_variants (variant_id, g_hgvs_description, c_hgvs_description,
-                               p_hgvs_description, mane, gene_symbol, hgnc_id, metadata) VALUES (%s, %s, %s, %s,
+                               p_hgvs_description, mane, gene_symbol, hgnc_id, metadata) VALUES (, %s, %s, %s,
                                %s,%s, %s, %s)""", (variant_id, genomic_hgvs, transcript[0], transcript[1],
                                transcript[-1], transcript[2], transcript[3], json.dumps(metadata)))
                 conn.commit()
@@ -87,13 +87,13 @@ def app():
     # Add section to search database
     if st.button("Search database"):
         if search_by == "Variant ID":
-            cursor.execute("SELECT * FROM hgvs_variants WHERE variant_id LIKE %s", (f"%{search_term}%",))
+            cursor.execute("SELECT  FROM hgvs_variants WHERE variant_id LIKE %s", (f"%{search_term}%",))
         elif search_by == "g. HGVS Description":
-            cursor.execute("SELECT * FROM hgvs_variants WHERE g_hgvs_description LIKE %s", (f"%{search_term}%",))
+            cursor.execute("SELECT  FROM hgvs_variants WHERE g_hgvs_description LIKE %s", (f"%{search_term}%",))
         elif search_by == "c. HGVS Description":
-            cursor.execute("SELECT * FROM hgvs_variants WHERE c_hgvs_description LIKE %s", (f"%{search_term}%",))
+            cursor.execute("SELECT  FROM hgvs_variants WHERE c_hgvs_description LIKE %s", (f"%{search_term}%",))
         elif search_by == "p. HGVS Description":
-            cursor.execute("SELECT * FROM hgvs_variants WHERE p_hgvs_description LIKE %s", (f"%{search_term}%",))
+            cursor.execute("SELECT  FROM hgvs_variants WHERE p_hgvs_description LIKE %s", (f"%{search_term}%",))
 
         results = cursor.fetchall()
 

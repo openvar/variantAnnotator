@@ -20,7 +20,7 @@ class MySql:
                                  mane VARCHAR(255) NOT NULL,
                                  gene_symbol VARCHAR(255) NOT NULL,
                                  hgnc_id VARCHAR(255) NOT NULL,
-                                 metadata JSON NOT NULL
+                                 metadata JSON(500) NOT NULL
                                  )"""
 
         self.__drop_table = """DROP TABLE hgvs_variants"""

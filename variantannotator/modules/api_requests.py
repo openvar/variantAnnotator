@@ -44,4 +44,3 @@ class VvRest:
         lovd_response = requests.get(url)
         return lovd_response
 
-

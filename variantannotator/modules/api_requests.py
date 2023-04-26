@@ -6,8 +6,8 @@ import requests
 
 class VvRest:
     def __init__(self):
-        # self.base_url = "http://127.0.0.1:8080/"
-        self.base_url = "https://rest.variantvalidator.org"
+        self.base_url = "http://127.0.0.1:8080/"
+        # self.base_url = "https://rest.variantvalidator.org"
         self.lovd_call = "{}/LOVD/lovd/{}/{}/{}/{}/{}/{}"
 
     def lovd(self, genome_build, variant_description, transcript_model="refseq",  select_transcripts="all",

@@ -1,7 +1,26 @@
+import os
 import streamlit as st
 from modules import db_mysql, api_requests
 import json
 import pandas as pd
+import logging
+from configparser import ConfigParser
+from pathlib import Path
+import os
+
+# Read configuration file
+current_directory = Path.cwd()
+CONFIG_FILE = f"{current_directory}/config.ini"
+config = ConfigParser()
+config.read(CONFIG_FILE)
+
+
+# Setup in test mode"
+if config["testing"]["testing"] == "True":
+    os.environ["testing"] = "Testing"
+
+# Set loging
+logger = logging.getLogger(__name__)
 
 # Create object variables
 msql = db_mysql.MySql()
@@ -30,13 +49,12 @@ def app():
 
     # Add validate button
     if st.button("Validate Variant and add to database"):
-
         # Send request to VV API LOVD endpoint
         response = VR.lovd(genome_build, hgvs_description, return_format="json")
         if response.status_code != 200:
             # Warn if error recieved and print url so user can spot issues
             if response.status_code == 500:
-                st.warning(f"Error code returned for url {response.url}")
+                st.error(f"Error code returned for url {response.url}")
         else:
             response_dictionary = response.json()
 
@@ -53,7 +71,7 @@ def app():
 
                 # Warn of genomic variant issues
                 if data["genomic_variant_error"] is not None:
-                    st.warning(data["genomic_variant_error"].replace(":", "\:"))
+                    st.error(data["genomic_variant_error"].replace(":", "\:"))
 
                 # Extract the required data
                 genomic_hgvs = data['g_hgvs']
@@ -78,10 +96,10 @@ def app():
                 st.success("Variant added successfully!")
 
             # Exceptions that are returned for failed variants
-            except TypeError:
-                pass
-            except KeyError:
-                pass
+            except TypeError as e:
+                logger.error(f"{str(e)}:{hgvs_description}:{genome_build}")
+            except KeyError as e:
+                logger.error(f"{str(e)}:{hgvs_description}:{genome_build}")
 
     # Search for stored variants
     st.subheader("Search Variants")

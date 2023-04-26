@@ -2,12 +2,15 @@
 This module creates an object that creates requests to call data from the VariantValidator API
 """
 import requests
+import os
 
 
 class VvRest:
     def __init__(self):
-        self.base_url = "http://127.0.0.1:8080/"
-        # self.base_url = "https://rest.variantvalidator.org"
+        if os.environ["testing"] == "Testing":
+            self.base_url = "http://127.0.0.1:8080/"
+        else:
+            self.base_url = "https://rest.variantvalidator.org"
         self.lovd_call = "{}/LOVD/lovd/{}/{}/{}/{}/{}/{}"
 
     def lovd(self, genome_build, variant_description, transcript_model="refseq",  select_transcripts="all",

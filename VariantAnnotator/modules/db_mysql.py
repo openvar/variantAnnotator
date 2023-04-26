@@ -1,13 +1,22 @@
 import mysql.connector
+from pathlib import Path
+from configparser import ConfigParser
+
+# Read configuration file
+current_directory = Path.cwd()
+CONFIG_FILE = f"{current_directory}/config.ini"
+config = ConfigParser()
+config.read(CONFIG_FILE)
 
 
 class MySql:
 
     def __init__(self):
-        self.config = {"host": "localhost",
-                       "user": "root",
-                       "password": "",
-                       "database": "hgvs_variant_db"}
+        self.config = {"host": config["mysql"]["host"],
+                       "port": config["mysql"]["port"],
+                       "user": config["mysql"]["user"],
+                       "password": config["mysql"]["password"],
+                       "database": config["mysql"]["database"]}
 
         self.__create_database = """CREATE DATABASE IF NOT EXISTS hgvs_variant_db"""
 

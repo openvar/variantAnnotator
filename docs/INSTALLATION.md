@@ -8,7 +8,7 @@ $ conda env create -f environment.yml
 
 ### Activate the environment
 ```bash
-$ pip install -r variantAnnotator
+$ conda activate variantAnnotator
 ```
 
 ### Install additional python requirements
